@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="khan-issues.js"></script>
+	<script type="text/javascript" src="showdown.js"></script>
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="khan-issues.css" type="text/css" media="all" />
+	<title>Khan Academy Issue Triage Tool</title>
+</head>
+<body>
+	<div id="messages">
+		<div id="loading">
+			Loading issues from GitHub...
+		</div>
+	</div>
+	<div id="main">
+		<div id="tabs">
+			<ul>
+				<li><a href="#new-issues">All issues without comments</a></li>
+				<li><a href="#realbug-issues">realbug</a></li>
+				<li><a href="#notabug-issues">notabug</a></li>
+				<li><a href="#comment-issues">All other issues with comments</a></li>
+			</ul>
+			<div id="new-issues" class="ui-helper-clearfix">
+				<div class="exercise-list fancy-scrollbar"></div>
+				<div class="issue-detail fancy-scrollbar"></div>
+			</div>
+			<div id="comment-issues" class="ui-helper-clearfix">
+				<div class="exercise-list fancy-scrollbar"></div>
+				<div class="issue-detail fancy-scrollbar"></div>
+			</div>
+			<div id="realbug-issues" class="ui-helper-clearfix">
+				<div class="exercise-list fancy-scrollbar"></div>
+				<div class="issue-detail fancy-scrollbar"></div>
+			</div>
+			<div id="notabug-issues" class="ui-helper-clearfix">
+				<div class="exercise-list fancy-scrollbar"></div>
+				<div class="issue-detail fancy-scrollbar"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
