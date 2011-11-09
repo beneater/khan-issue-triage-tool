@@ -110,7 +110,9 @@ jQuery( function() {
 									href: this.html_url,
 									target: "github"
 								});
-								var markdownDiv = jQuery( '<div class="markdown">' ).append( converter.makeHtml( this.body ) ).appendTo( issuediv );
+								var markdown = converter.makeHtml( this.body );
+								markdown = markdown.replace(/(AskTb[^\s\)]*)/, '<span style="color: #f00">$1</span>');
+								var markdownDiv = jQuery( '<div class="markdown">' ).append( markdown ).appendTo( issuediv );
 								if ( this.comments > 0 ) {
 									jQuery( '<a class="comment-count">' ).append( this.comments + " comment" + (this.comments === 1 ? "" : "s") ).appendTo( jQuery( issuediv ) ).attr({
 										href: this.html_url,
