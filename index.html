@@ -13,7 +13,10 @@
 <body>
 	<div id="messages">
 		<div id="loading">
-			Loading issues from GitHub...
+			Loading issues from GitHub... <span id="loadprogress"></span>
+		</div>
+		<div id="ratelimit">
+			<a href="http://developer.github.com/v3/#rate-limiting" target="github">GitHub limit this hour</a>: <span id="githublimit">5000</span>
 		</div>
 	</div>
 	<div id="main">
