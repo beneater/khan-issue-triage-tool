@@ -43,6 +43,7 @@ jQuery( function() {
 		taggedIssues[ this ] = {};
 	});
 	var converter = new Showdown.converter();
+	var progress = 0;
 
 	var getIssues = function( page ) {
 		var commentXHRs = [];
@@ -54,6 +55,8 @@ jQuery( function() {
 					var exerciseName = this.title.split(" - ")[0];
 					if ( this.comments > 0 ) {
 						commentXHRs.push( jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues/' + this.number + '/comments?per_page=100&callback=?', function( data ) {
+							++progress;
+							jQuery( "#loadprogress" ).text( "(" + progress + ")" );
 							jQuery( "#githublimit" ).text( data.meta[ "X-RateLimit-Remaining" ] );
 							var text = "";
 							jQuery.each( data.data, function() {
@@ -80,7 +83,8 @@ jQuery( function() {
 				}
 			});
 			jQuery.when.apply( jQuery, commentXHRs ).done(function() {
-				jQuery( "#loadprogress" ).text( "(" + page * 100 + ")" );
+				progress = page * 100;
+				jQuery( "#loadprogress" ).text( "(" + progress + ")" );
 				if ( data.meta.Link[0][1].rel === "next" ) {
 					getIssues( page + 1 );
 				} else {
