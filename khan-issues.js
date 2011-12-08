@@ -53,6 +53,9 @@ jQuery( function() {
 				if ( this.user.login == "KhanBugz" ) {
 					var exercise = this;
 					var exerciseName = this.title.split(" - ")[0];
+					if (exerciseName === "") {
+						exerciseName = "Unknown exercise";
+					}
 					if ( this.comments > 0 ) {
 						commentXHRs.push( jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues/' + this.number + '/comments?per_page=100&callback=?', function( data ) {
 							++progress;
