@@ -28,6 +28,12 @@ function prettyDate(time) {
 		day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
 }
 
+//http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+function getURLParameter(name) {
+ return decodeURI(
+     (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+ );
+}
 
 // tags listed first get matched first
 // "other" is special and should be last
@@ -35,6 +41,23 @@ function prettyDate(time) {
 var TAGS = [ "realbug", "notabug", "other" ];
 
 jQuery( function() {
+	
+	var noauth = getURLParameter("noauth");
+	var accessToken = '';
+	
+	console.log('noauth='+noauth);
+	if( noauth == "null") {
+		var token = jQuery.cookie("GitHubAccessToken");
+		// Check for GitHubAccessToken cookie
+		if(token == null) {
+			// Redirect to get the access token
+			window.location.replace("setGitHubAuthCookie.php");
+		}
+		else {
+			accessToken = '&access_token=' + token; 
+		}
+	}
+
 	jQuery( "#tabs" ).tabs();
 	jQuery( "#loading" ).fadeIn( 200 );
 	var newIssues = {};
@@ -47,7 +70,7 @@ jQuery( function() {
 
 	var getIssues = function( page ) {
 		var commentXHRs = [];
-		jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues?page=' + page + '&per_page=100&callback=?', function( data ) {
+		jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues?page=' + page + '&per_page=100' + accessToken + '&callback=?', function( data ) {
 			jQuery( "#githublimit" ).text( data.meta[ "X-RateLimit-Remaining" ] );
 			jQuery.each( data.data, function() {
 				if ( this.user.login == "KhanBugz" ) {
@@ -57,7 +80,7 @@ jQuery( function() {
 						exerciseName = "Unknown exercise";
 					}
 					if ( this.comments > 0 ) {
-						commentXHRs.push( jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues/' + this.number + '/comments?per_page=100&callback=?', function( data ) {
+						commentXHRs.push( jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues/' + this.number + '/comments?per_page=100' + accessToken + '&callback=?', function( data ) {
 							++progress;
 							jQuery( "#loadprogress" ).text( "(" + progress + ")" );
 							jQuery( "#githublimit" ).text( data.meta[ "X-RateLimit-Remaining" ] );
