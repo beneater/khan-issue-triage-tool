@@ -88,7 +88,7 @@ jQuery( function() {
 			jQuery.when.apply( jQuery, commentXHRs ).done(function() {
 				progress = page * 100;
 				jQuery( "#loadprogress" ).text( "(" + progress + ")" );
-				if ( data.meta.Link[0][1].rel === "next" ) {
+				if ( data.meta.Link[0][1].rel === "next" && data.meta[ "X-RateLimit-Remaining" ] > 0 ) {
 					getIssues( page + 1 );
 				} else {
 					var populateDom = function( issueList, container ) {
