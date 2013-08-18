@@ -48,19 +48,21 @@ jQuery( function() {
 	var getIssues = function( page ) {
 		var commentXHRs = [];
 		jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues?page=' + page + '&per_page=100&callback=?', function( data ) {
-			jQuery( "#githublimit" ).text( data.meta[ "X-RateLimit-Remaining" ] );
+			var gitHubLimit = data.meta[ "X-RateLimit-Remaining" ];
+			jQuery( "#githublimit" ).text( gitHubLimit );
 			jQuery.each( data.data, function() {
-				if ( this.user.login == "KhanBugz" ) {
+				if ( this.user && this.user.login == "KhanBugz" ) {
 					var exercise = this;
 					var exerciseName = this.title.split(" - ")[0];
 					if (exerciseName === "") {
 						exerciseName = "Unknown exercise";
 					}
-					if ( this.comments > 0 ) {
+					if ( gitHubLimit > 0 && this.comments > 0 ) {
 						commentXHRs.push( jQuery.getJSON( 'https://api.github.com/repos/Khan/khan-exercises/issues/' + this.number + '/comments?per_page=100&callback=?', function( data ) {
+							gitHubLimit = data.meta[ "X-RateLimit-Remaining" ];
 							++progress;
 							jQuery( "#loadprogress" ).text( "(" + progress + ")" );
-							jQuery( "#githublimit" ).text( data.meta[ "X-RateLimit-Remaining" ] );
+							jQuery( "#githublimit" ).text( gitHubLimit );
 							var text = "";
 							jQuery.each( data.data, function() {
 								text += this.body;
@@ -88,7 +90,7 @@ jQuery( function() {
 			jQuery.when.apply( jQuery, commentXHRs ).done(function() {
 				progress = page * 100;
 				jQuery( "#loadprogress" ).text( "(" + progress + ")" );
-				if ( data.meta.Link[0][1].rel === "next" && data.meta[ "X-RateLimit-Remaining" ] > 0 ) {
+				if ( gitHubLimit > 0 && data.meta.Link[0][1].rel === "next" ) {
 					getIssues( page + 1 );
 				} else {
 					var populateDom = function( issueList, container ) {
