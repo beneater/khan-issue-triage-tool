@@ -102,13 +102,13 @@ jQuery( function() {
 
 						jQuery.each( sortedIssues, function() {
 							var exerciseName = this + "";
-							var joinedTitle = exerciseName.split(' ').join('');
-							var issue = jQuery( "#" + container + " .exercise-list" ).append( '<div id="' + joinedTitle + '" class="exercise-list-item">' )
-							jQuery( "#" + container + " #" + joinedTitle ).append('<span class="issue-count">');
-							jQuery( "#" + container + " #" + joinedTitle ).append('<span class="exercise-name">');
-							jQuery( "#" + container + " #" + joinedTitle + " .issue-count" ).append( issueList[ exerciseName ].length ) ;
-							jQuery( "#" + container + " #" + joinedTitle + " .exercise-name" ).append( exerciseName ) ;
-							jQuery( "#" + container + " #" + joinedTitle ).click( function( event ) {
+							var idfyedTitle = exerciseName.replace(/[^A-Za-z0-9]/g, '-');
+							var issue = jQuery( "#" + container + " .exercise-list" ).append( '<div id="' + idfyedTitle + '" class="exercise-list-item">' )
+							jQuery( "#" + container + " #" + idfyedTitle ).append('<span class="issue-count">');
+							jQuery( "#" + container + " #" + idfyedTitle ).append('<span class="exercise-name">');
+							jQuery( "#" + container + " #" + idfyedTitle + " .issue-count" ).append( issueList[ exerciseName ].length ) ;
+							jQuery( "#" + container + " #" + idfyedTitle + " .exercise-name" ).append( exerciseName ) ;
+							jQuery( "#" + container + " #" + idfyedTitle ).click( function( event ) {
 								event.preventDefault();
 								jQuery( "#" + container + " .exercise-list .exercise-list-item" ).removeClass( "highlighted" );
 								jQuery( this ).addClass( "highlighted" );
